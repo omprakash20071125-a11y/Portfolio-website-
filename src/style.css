@@ -324,3 +324,290 @@ body{font-size:17px;line-height:1.75}
  #work .row{min-height:420px}
  #work .row>div{padding:22px}
 }
+
+@media (max-width: 820px) {
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  section {
+    width: 100%;
+    min-height: auto;
+    padding: 100px 20px 70px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 88svh;
+    padding: 125px 18px 130px;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .hero h1 {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(40px, 10.5vw, 68px);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+  }
+
+  .hero .tag {
+    position: relative;
+    top: auto;
+    left: auto;
+    translate: none;
+    width: 100%;
+    max-width: 520px;
+    margin: 38px auto 0;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .hero .tag i {
+    margin-top: 14px;
+    font-size: 11px;
+  }
+
+  .mq {
+    padding: 12px 0 20px;
+    font-size: 12px;
+  }
+
+  nav {
+    left: 12px;
+    top: calc(14px + env(safe-area-inset-top, 0px));
+    gap: 8px;
+  }
+
+  nav a {
+    font-size: 10px;
+    padding-left: 10px;
+  }
+
+  .id {
+    right: 12px;
+    top: calc(14px + env(safe-area-inset-top, 0px));
+    font-size: 10px;
+  }
+
+  .cv {
+    right: 12px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    padding: 9px 14px;
+    font-size: 11px;
+  }
+
+  .about h2 {
+    font-size: clamp(54px, 13vw, 88px);
+  }
+
+  .aboutgrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 25px;
+  }
+
+  .photo {
+    width: min(78%, 300px);
+    min-width: 0;
+    margin: 0 auto;
+  }
+
+  .abt {
+    min-width: 0;
+  }
+
+  .abt h3 {
+    font-size: clamp(36px, 9vw, 52px);
+  }
+
+  .abt p {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .facts li {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 10px;
+    overflow-wrap: anywhere;
+  }
+
+  .bio {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 25px;
+    margin-top: 35px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px 15px;
+  }
+
+  .hd {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+
+  .hd h2 {
+    font-size: clamp(46px, 12vw, 76px);
+  }
+
+  .hd > span {
+    display: block;
+    max-width: 100%;
+    text-align: left;
+    font-size: 13px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    gap: 18px;
+  }
+
+  .gp {
+    width: 100%;
+    min-width: 0;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .gp .t {
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .lc svg {
+    width: min(190px, 65vw);
+    height: auto;
+  }
+
+  .lc .c {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .mini {
+    flex-wrap: wrap;
+    gap: 22px;
+  }
+
+  #work .rows {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    width: 100%;
+  }
+
+  #work .row {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  #work .row::before {
+    min-height: clamp(145px, 45vw, 200px);
+  }
+
+  #work .row > div {
+    padding: 20px;
+  }
+
+  #work .row b {
+    font-size: clamp(28px, 8vw, 38px);
+  }
+
+  .github-panel {
+    width: 100%;
+    min-width: 0;
+    padding: 20px 16px;
+  }
+
+  .github-panel-top,
+  .github-panel-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .github-chart-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .github-chart {
+    min-width: 620px;
+  }
+
+  .contact {
+    min-height: 75svh;
+    padding: 90px 20px 100px;
+  }
+
+  .contact h2 {
+    font-size: clamp(44px, 11vw, 76px);
+  }
+
+  .contact p.sub {
+    font-size: 14px;
+  }
+
+  .links {
+    gap: 18px;
+  }
+
+  .links a {
+    font-size: 13px;
+  }
+
+  .cvband {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+  }
+}
+
+@media (max-width: 400px) {
+
+  section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 10vw, 44px);
+  }
+
+  .gp {
+    padding: 18px 15px;
+  }
+
+  .stats {
+    gap: 20px 10px;
+  }
+}
+
+@media (hover: none) {
+  #work .row:hover {
+    transform: none;
+    padding: 0;
+  }
+
+  #work .row:hover::before {
+    transform: none;
+  }
+}
