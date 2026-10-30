@@ -1,0 +1,326 @@
+:root{--bg:#1a1b21;--lav:#d0c6ff;--vio:#7a4dff;--line:rgba(208,198,255,.16);--mut:rgba(255,255,255,.75);
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth;background:var(--bg)}
+html.lock,html.lock body{overflow:hidden;height:100%}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font:16px/1.7 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.01em;overflow-x:hidden}
+.d{font-family:"Grenze Gotisch",Georgia,serif;font-weight:900;color:var(--lav);line-height:.82;margin:0;letter-spacing:-.01em}
+.kick{display:block;color:var(--mut);letter-spacing:.2em;text-transform:uppercase;font-size:12px;margin-bottom:14px}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;transition:opacity .4s}
+#fallback{position:fixed;left:50%;top:50%;width:min(36vw,300px);aspect-ratio:3/4;translate:-50% -50%;z-index:0;display:none;border-radius:4px 12px 12px 4px;
+ background:linear-gradient(90deg,#14123a,#3a1fa8 12%,#1b1b4a);border:2px solid var(--lav);box-shadow:0 30px 80px #000}
+main,nav,.id,.dock,.cv,#bar,#rb{transition:opacity 1s}
+.lock main,.lock nav,.lock .id,.lock .dock,.lock .cv,.lock #bar,.lock #rb{opacity:0;pointer-events:none}
+main{position:relative;z-index:2}
+/* gate: the closed book */
+#gate{position:fixed;inset:0;z-index:50;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:9vh;transition:opacity .8s;outline:none}
+#gate.off{opacity:0;pointer-events:none}
+#gate span{color:var(--lav);letter-spacing:.3em;text-transform:uppercase;font-size:14px;border:1px solid var(--line);border-radius:99px;padding:12px 26px;background:rgba(26,27,33,.55);backdrop-filter:blur(10px);animation:hint 2.4s ease-in-out infinite;transition:background .3s}
+#gate:hover span{background:var(--vio)}
+@keyframes hint{50%{opacity:.45;transform:translateY(-6px)}}
+/* soft light that rises from the opened book */
+#beam{position:fixed;left:50%;bottom:50%;width:300px;height:55vh;margin-left:-150px;z-index:5;pointer-events:none;opacity:0;transform-origin:50% 100%;
+ background:linear-gradient(90deg,rgba(208,198,255,0),rgba(208,198,255,.5) 50%,rgba(208,198,255,0));
+ -webkit-mask-image:linear-gradient(to top,#000 10%,transparent 95%);mask-image:linear-gradient(to top,#000 10%,transparent 95%);filter:blur(22px)}
+#beam.fire{animation:bm 2.8s ease-in-out forwards}
+@keyframes bm{0%{opacity:0;transform:scaleY(.15)}45%{opacity:.7;transform:scaleY(.75)}100%{opacity:0;transform:scaleY(1.1)}}
+#halo{position:fixed;left:50%;top:50%;width:min(80vw,640px);aspect-ratio:1;translate:-50% -50%;z-index:4;pointer-events:none;opacity:0;border-radius:50%;
+ background:radial-gradient(circle,rgba(154,125,255,.38),rgba(122,77,255,.12) 45%,transparent 70%)}
+#halo.fire{animation:hl 3.2s ease-in-out forwards}
+@keyframes hl{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
+/* chrome */
+nav{position:fixed;left:32px;top:calc(28px + env(safe-area-inset-top,0px));z-index:20;display:flex;flex-direction:column;gap:10px}
+nav a{color:#fff;text-decoration:none;padding-left:14px;position:relative;opacity:.55;transition:opacity .3s}
+nav a sup{font-size:11px;margin-right:4px;opacity:.7}
+nav a:hover,nav a.on{opacity:1}
+nav a:before{content:"";position:absolute;left:0;top:2px;bottom:2px;width:3px;border-radius:2px;background:var(--vio);transform:scaleY(0);transition:transform .35s}
+nav a.on:before{transform:scaleY(1)}
+.id{position:fixed;right:32px;top:calc(28px + env(safe-area-inset-top,0px));z-index:20;display:flex;gap:64px;text-align:left}
+.id span{color:var(--mut);display:block}
+#bar{position:fixed;left:0;top:0;height:2px;width:100%;background:var(--vio);transform:scaleX(0);transform-origin:left;z-index:30}
+#rb{position:fixed;left:50%;top:0;width:16px;height:50px;margin-left:-8px;background:var(--vio);z-index:29;clip-path:polygon(0 0,100% 0,100% 100%,50% calc(100% - 8px),0 100%)}
+.dock{position:fixed;left:32px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:20;color:var(--mut)}
+.dock b{color:#fff;font-weight:400}
+.cv{position:fixed;right:32px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:20;color:#fff;text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:10px 20px;background:rgba(26,27,33,.6);backdrop-filter:blur(10px);transition:.3s}
+.cv:hover{background:var(--vio);border-color:var(--vio)}
+/* loader */
+#ld{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:flex-end;justify-content:space-between;padding:32px;transition:transform 1s cubic-bezier(.76,0,.24,1)}
+#ld.go{transform:translateY(-100%)}
+#ld .d{font-size:clamp(40px,7vw,90px)}
+#ld .n{font-size:clamp(40px,7vw,90px);color:var(--lav);font-weight:500}
+/* sections */
+section{position:relative;min-height:100vh;padding:130px 32px 80px}
+.mask{display:block;overflow:hidden;padding-bottom:.08em}
+.mask>span{display:block;transform:translateY(110%);transition:transform 1.3s cubic-bezier(.16,1,.3,1)}
+.show .mask>span,.mask.show>span{transform:none}
+.hero{min-height:100vh;justify-content:center;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:96px}
+.hero h1{font-size:clamp(52px,9vw,140px)}
+.hero .tag{position:absolute;left:50%;translate:-50% 0;top:calc(100vh - 150px);width:min(92vw,460px);color:var(--mut)}
+.hero .tag i{display:block;margin-top:10px;font-style:normal;color:var(--lav);letter-spacing:.2em;font-size:13px}
+.mq{position:absolute;bottom:0;left:0;right:0;border-top:1px solid var(--line);padding:14px 0 70px;overflow:hidden;white-space:nowrap;color:var(--mut)}
+.mq div{display:inline-block;animation:mq 30s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+.about h2{font-size:clamp(64px,13vw,200px);text-align:center;position:relative;z-index:1}
+.photo{position:relative;z-index:3;width:min(26vw,360px);min-width:210px;aspect-ratio:3/4;margin:-2vw auto 0;overflow:hidden;background:linear-gradient(165deg,#6b6c75,#2a2b32);clip-path:inset(100% 0 0 0);transition:clip-path 1.5s cubic-bezier(.76,0,.24,1)}
+.show .photo{clip-path:inset(0)}
+.photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);display:none}
+.photo.has img{display:block}.photo.has .ph{display:none}
+.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.7);cursor:pointer;padding:20px}
+.ph u{display:block;margin-top:8px;color:var(--lav)}
+.bio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;line-height:1.75;max-width:1100px;margin:70px auto 0;color:var(--mut)}
+.bio h4{margin:0 0 10px;color:#fff;font-weight:500}
+.stats{display:flex;justify-content:space-between;max-width:1100px;margin:60px auto 0;border-top:1px solid var(--line);padding-top:30px}
+.stats b{display:block;font:900 clamp(36px,4.5vw,60px)/1 "Grenze Gotisch",serif;color:var(--lav)}
+.hd{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:50px}
+.hd h2{font-size:clamp(52px,8vw,120px)}
+.hd>span{color:var(--mut);max-width:300px;text-align:right}
+.rows{max-width:1300px;margin:0 auto}
+.row{display:grid;grid-template-columns:70px 1fr auto;align-items:baseline;gap:20px;padding:26px 0;border-top:1px solid var(--line);color:#fff;text-decoration:none;transition:padding .5s cubic-bezier(.16,1,.3,1),color .3s}
+.row:last-child{border-bottom:1px solid var(--line)}
+.row b{font:900 clamp(28px,4.5vw,64px)/1 "Grenze Gotisch",serif;color:var(--lav)}
+.row em{font-style:normal;color:var(--mut)}
+.row:hover{padding-left:30px}
+#pv{position:fixed;left:0;top:0;width:min(24vw,320px);aspect-ratio:3/4;z-index:15;pointer-events:none;opacity:0;scale:.85;transition:opacity .3s,scale .4s;border-radius:3px 8px 8px 3px;display:grid;place-items:center;text-align:center;font:900 30px/1 "Grenze Gotisch",serif;color:#fff;box-shadow:0 20px 60px #000}
+#pv.on{opacity:1;scale:1}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:22px;max-width:1300px;margin:0 auto}
+.gp{border:1px solid var(--line);border-radius:22px;background:linear-gradient(160deg,rgba(122,77,255,.14),rgba(255,255,255,.03));backdrop-filter:blur(14px);padding:30px}
+.gp .t{display:flex;justify-content:space-between;color:var(--mut);margin-bottom:26px}
+.live:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#7dffb0;margin-right:8px;box-shadow:0 0 10px #7dffb0;animation:pl 2s infinite}
+@keyframes pl{50%{opacity:.3}}
+.heat{display:flex;gap:4px;overflow-x:auto;padding-bottom:6px}
+.heat div{display:flex;flex-direction:column;gap:4px}
+.heat i{width:14px;height:14px;border-radius:3px;opacity:0;transform:scale(.3);transition:opacity .4s,transform .4s}
+.show .heat i{opacity:1;transform:none}
+.mini{display:flex;gap:40px;margin-top:26px;color:var(--mut)}
+.mini b{display:block;color:#fff;font:900 34px/1 "Grenze Gotisch",serif}
+.lc{display:grid;place-items:center;position:relative}
+.lc svg{width:200px;height:200px;transform:rotate(-90deg)}
+.lc circle{fill:none;stroke-width:10;stroke-linecap:round}
+.lc .tr{stroke:rgba(255,255,255,.08)}
+.lc .fg{stroke:var(--lav);stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset 2.2s cubic-bezier(.16,1,.3,1) .3s;filter:drop-shadow(0 0 8px var(--vio))}
+.show .lc .fg{stroke-dashoffset:150}
+.lc .c{position:absolute;top:70px;text-align:center}
+.lc .c b{font:900 52px/1 "Grenze Gotisch",serif;color:var(--lav);display:block}
+.diff{display:flex;justify-content:space-between;width:100%;margin-top:24px;color:var(--mut)}
+.diff b{color:#fff;font-weight:400}
+.btn{display:inline-block;color:#fff;text-decoration:none;border:1px solid var(--vio);border-radius:99px;padding:22px 52px;transition:.35s;will-change:transform}
+.btn:hover{background:var(--vio)}
+.cvband{display:flex;justify-content:space-between;align-items:center;max-width:1300px;margin:80px auto 0;border-top:1px solid var(--line);padding-top:50px}
+.cvband h3{font:900 clamp(28px,4vw,56px)/1 "Grenze Gotisch",serif;color:var(--lav);margin:0}
+.contact{background:linear-gradient(180deg,rgba(0,0,0,.55),#000);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding-bottom:110px}
+.contact h2{font-size:clamp(48px,9vw,140px)}
+.contact p.sub{color:var(--mut);margin:14px 0 0}
+.links{display:flex;gap:34px;margin-top:34px;flex-wrap:wrap;justify-content:center}
+.links a{color:#fff;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:4px;transition:.3s}
+.links a:hover{color:var(--lav);border-color:var(--lav)}
+/* readability pass */
+.d{line-height:.95}.mask{padding-bottom:.14em}
+.kick{font-size:13px;letter-spacing:.18em}
+nav{gap:12px}nav a{font-size:13px;letter-spacing:.14em;opacity:.7}
+.id{font-size:13px;line-height:1.5;gap:48px}
+.dock{font-size:13px}.cv{font-size:14px}
+.hero .tag{font-size:17px;line-height:1.7;color:rgba(255,255,255,.88);width:min(92vw,520px);top:calc(100vh - 270px)}
+.hero .tag i{font-size:13px;margin-top:16px}
+.mq{font-size:14px;letter-spacing:.12em}
+.bio{font-size:16px;line-height:1.8;color:rgba(255,255,255,.85)}
+.bio h4{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);margin-bottom:12px}
+.stats{font-size:14px;color:var(--mut)}.stats b{margin-bottom:8px}
+.hd>span{font-size:15px;line-height:1.6}
+.row b{font-weight:700;line-height:1.1}.row em{font-size:14px}
+.gp .t{font-size:14px}.mini{font-size:14px}.diff{font-size:15px}.lc .c{font-size:14px}
+.btn{font-size:15px;padding:18px 40px}
+.contact p.sub{font-size:18px;color:rgba(255,255,255,.88)}
+.links a{font-size:16px}
+@media(max-width:820px){
+ .id{right:16px;gap:0}.id div:last-child{display:none}nav{left:16px}.dock{display:none}.cv{right:16px}
+ section{padding:120px 20px 80px}.bio,.grid{grid-template-columns:1fr}.stats{flex-wrap:wrap;gap:24px}
+ .row{grid-template-columns:36px 1fr}.row em:last-child{display:none}.hd>span{display:none}.cvband{flex-direction:column;gap:30px;align-items:flex-start}
+ nav a{font-size:12px}.id{font-size:12px}.hero .tag{font-size:16px;top:calc(100vh - 290px)}.row em:first-child{font-size:13px}.contact p.sub{font-size:16px}
+}
+
+/* ===== v3: about layout, readability, new content ===== */
+:root{--mut:rgba(255,255,255,.84)}
+body{font-size:17px;line-height:1.75}
+.hero h1{font-size:clamp(44px,8vw,124px)}
+.hero .tag{font-size:18px;color:#fff}
+.about h2{font-size:clamp(56px,10vw,150px)}
+.aboutgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,90px);align-items:center;max-width:1180px;margin:34px auto 0}
+.pcol{display:flex;align-items:center;justify-content:center}
+.photo{width:min(100%,400px);min-width:0;margin:0;aspect-ratio:4/5;border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 80px rgba(122,77,255,.28);background:#241a5c}
+.photo img{filter:none;object-position:50% 12%}
+.abt{display:flex;flex-direction:column;justify-content:center}
+.abt h3{font:900 clamp(38px,4.6vw,64px)/1.05 "Grenze Gotisch",serif;color:var(--lav);margin:0 0 10px}
+.abt .role{color:#fff;font-size:15px;letter-spacing:.06em;margin:0 0 22px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.abt p{margin:0 0 16px;color:rgba(255,255,255,.9);font-size:17px;line-height:1.85}
+.facts{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
+.facts li{display:grid;grid-template-columns:84px 1fr;gap:14px;font-size:15px;line-height:1.6;color:rgba(255,255,255,.9)}
+.facts b{color:var(--lav);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:12px;padding-top:3px}
+.stats{font-size:15px;color:rgba(255,255,255,.84)}
+.row{grid-template-columns:70px 1fr minmax(0,auto)}
+.row b{font-size:clamp(28px,3.4vw,50px)}
+.row>div p{margin:10px 0 0;color:rgba(255,255,255,.82);font-size:15px;line-height:1.7;max-width:760px}
+.row>em:last-child{font-size:13px;text-align:right;max-width:220px}
+.row{align-items:start}.row>em:first-child{padding-top:10px}
+.edu{display:grid;gap:18px;margin-bottom:32px}
+.edu div{display:grid;gap:2px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.edu b{font-weight:500;color:#fff;font-size:18px}.edu span{color:rgba(255,255,255,.88)}.edu em{font-style:normal;color:var(--lav);font-size:14px}
+.gp .t.lead{margin:6px 0 16px}
+.plain{list-style:none;padding:0;margin:0;display:grid;gap:12px;font-size:15px;line-height:1.7;color:rgba(255,255,255,.88)}
+.plain b{color:#fff;font-weight:500}
+.show .lc .fg{stroke-dashoffset:36}
+.lc .c{top:68px}
+.diff{flex-direction:column;gap:4px;font-size:14px}.diff b{display:block;color:var(--lav);font-size:16px}
+.grid{grid-template-columns:1.6fr 1fr}
+@media(max-width:820px){
+ .aboutgrid{grid-template-columns:1fr;gap:30px}
+ .photo{width:min(80%,340px)}
+ .abt{text-align:left}.facts li{grid-template-columns:1fr;gap:2px}
+ .row{grid-template-columns:36px 1fr}.row>em:last-child{display:none}
+ body{font-size:16px}.hero h1{font-size:clamp(40px,12vw,80px)}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* GitHub contribution chapter */
+.github-section .hd h2{font-size:clamp(44px,7vw,104px)}
+.github-panel{max-width:1300px;margin:0 auto;padding:clamp(20px,4vw,42px);border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(122,77,255,.16),rgba(255,255,255,.025));backdrop-filter:blur(14px);box-shadow:0 24px 80px rgba(0,0,0,.18)}
+.github-panel-top,.github-panel-bottom{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.github-panel-top p{margin:8px 0 0;color:rgba(255,255,255,.78);font-size:15px}
+.github-total{display:flex;align-items:baseline;gap:10px;margin-top:18px;color:var(--mut);font:11px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+.github-total strong{color:var(--lav);font:900 clamp(28px,4vw,42px)/1 "Grenze Gotisch",serif;letter-spacing:0}
+.github-total span{opacity:.8}
+.github-panel-top>a{color:var(--lav);font:500 13px "JetBrains Mono",monospace;letter-spacing:.08em;text-decoration:none;white-space:nowrap;border-bottom:1px solid rgba(208,198,255,.45);padding-bottom:6px}
+.github-chart-wrap{margin:34px 0 24px;padding:24px 18px;border:1px solid rgba(208,198,255,.13);border-radius:14px;background:rgba(10,10,18,.48);overflow-x:auto}
+.github-chart{display:block;width:100%;min-width:680px;height:auto;min-height:110px;object-fit:contain}
+.github-chart-fallback{color:rgba(255,255,255,.8);text-align:center;margin:28px 0}
+.github-chart-fallback a{color:var(--lav)}
+.github-panel-bottom{padding-top:18px;border-top:1px solid var(--line);color:var(--mut);font:11px "JetBrains Mono",monospace;letter-spacing:.08em}
+.github-panel-bottom>span:first-child{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.github-panel-bottom i{display:block;width:11px;height:11px;border-radius:3px;background:rgba(155,134,255,.18)}
+.github-panel-bottom i:nth-of-type(2){background:rgba(155,134,255,.38)}
+.github-panel-bottom i:nth-of-type(3){background:rgba(155,134,255,.58)}
+.github-panel-bottom i:nth-of-type(4){background:rgba(155,134,255,.78)}
+.github-panel-bottom i:nth-of-type(5){background:#9b86ff}
+@media(max-width:820px){.github-panel-top,.github-panel-bottom{align-items:flex-start;flex-direction:column}.github-chart-wrap{margin:24px 0 18px;padding:16px 12px}.github-panel-bottom{gap:12px}.github-panel-bottom>span:last-child{font-size:10px}.github-section .hd h2{font-size:clamp(42px,11vw,72px)}}
+
+
+/* Project cards — editorial lavender/graphite treatment */
+#work .rows{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:22px;
+ max-width:1300px;
+ margin:0 auto;
+}
+#work .row{
+ position:relative;
+ display:flex;
+ flex-direction:column;
+ align-items:stretch;
+ gap:0;
+ min-width:0;
+ min-height:390px;
+ padding:0;
+ overflow:hidden;
+ border:1px solid rgba(208,198,255,.2);
+ border-radius:20px;
+ background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+ color:#fff;
+ box-shadow:0 18px 55px rgba(0,0,0,.16);
+ transition:transform .45s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .4s;
+}
+#work .row::before{
+ content:attr(data-l);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ min-height:205px;
+ padding:28px;
+ background:var(--card-art,linear-gradient(145deg,#30205f,#7a4dff));
+ color:rgba(255,255,255,.92);
+ font:900 clamp(34px,5vw,62px)/.95 "Grenze Gotisch",serif;
+ letter-spacing:-.025em;
+ text-align:center;
+ text-shadow:0 8px 28px rgba(0,0,0,.28);
+ border-bottom:1px solid rgba(208,198,255,.2);
+ transition:filter .4s,transform .6s cubic-bezier(.16,1,.3,1);
+}
+#work .row::after{
+ content:"↗";
+ position:absolute;
+ top:18px;
+ right:18px;
+ display:grid;
+ place-items:center;
+ width:36px;
+ height:36px;
+ border:1px solid rgba(255,255,255,.42);
+ border-radius:50%;
+ background:rgba(15,12,35,.25);
+ color:#fff;
+ font:18px/1 "JetBrains Mono",monospace;
+ backdrop-filter:blur(8px);
+ transition:background .3s,transform .3s;
+}
+#work .row>em:first-child{
+ position:absolute;
+ top:18px;
+ left:18px;
+ z-index:1;
+ padding:7px 10px;
+ border:1px solid rgba(255,255,255,.35);
+ border-radius:99px;
+ background:rgba(15,12,35,.28);
+ color:#fff;
+ font:12px "JetBrains Mono",monospace;
+ backdrop-filter:blur(8px);
+}
+#work .row>div{
+ display:flex;
+ flex:1;
+ flex-direction:column;
+ align-items:flex-start;
+ padding:25px 26px 18px;
+}
+#work .row b{
+ display:block;
+ color:var(--lav);
+ font:900 clamp(29px,3vw,42px)/1.05 "Grenze Gotisch",serif;
+}
+#work .row>div p{
+ margin:12px 0 0;
+ max-width:unset;
+ color:rgba(255,255,255,.78);
+ font-size:14px;
+ line-height:1.75;
+}
+#work .row>em:last-child{
+ display:block;
+ margin:0 26px;
+ padding:14px 0 20px;
+ border-top:1px solid var(--line);
+ color:var(--lav);
+ font-size:11px;
+ letter-spacing:.06em;
+ text-align:left;
+}
+#work .row:hover{
+ padding:0;
+ transform:translateY(-7px);
+ border-color:rgba(208,198,255,.62);
+ box-shadow:0 28px 75px rgba(0,0,0,.32),0 0 35px rgba(122,77,255,.13);
+}
+#work .row:hover::before{filter:saturate(1.15) brightness(1.12);transform:scale(1.025)}
+#work .row:hover::after{background:var(--vio);transform:rotate(45deg)}
+#pv{display:none!important}
+@media(max-width:820px){
+ #work .rows{grid-template-columns:1fr;gap:18px}
+ #work .row{min-height:0}
+ #work .row::before{min-height:185px}
+ #work .row>div{padding:22px 22px 16px}
+ #work .row>em:last-child{margin:0 22px;padding-bottom:18px}
+}
+@media(min-width:821px) and (max-width:1100px){
+ #work .row{min-height:420px}
+ #work .row>div{padding:22px}
+}
