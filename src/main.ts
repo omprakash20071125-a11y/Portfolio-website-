@@ -19,7 +19,7 @@ function openBook(){
                                                     /* 0.7s: cover opens (driven in the 3D loop) */
  setTimeout(function(){$("#beam").classList.add("fire");$("#halo").classList.add("fire")},2100); /* soft light rises */
  setTimeout(function(){                             /* then the whole website fades in, book fades out */
-  gone=true;gl.style.transition="opacity 1.4s";$("#fallback").style.opacity=0;
+  gone=true;gl.style.transition="opacity 1.4s";$("#fallback").style.opacity="0";
   document.documentElement.classList.remove("lock");scrollTo(0,0);
   $("#hero").classList.add("show");$("#hero .mask").classList.add("show");sc();
   setTimeout(function(){gl.style.display="none";$("#fallback").style.display="none"},1600);
@@ -66,7 +66,7 @@ function sc(){var m=document.documentElement.scrollHeight-innerHeight,p=m>0?scro
  var a=hero.getBoundingClientRect(),b=con.getBoundingClientRect();
  HS=Math.max(0,Math.min(1,-a.top/(innerHeight*.95)));
  CK=Math.max(0,Math.min(1,(.9-b.top/innerHeight)/.7));
- var oh=Math.max(0,Math.min(1,1-(-a.top-innerHeight*.95)/(innerHeight*.6))),oc=Math.max(0,Math.min(1,1-b.top/(innerHeight*.9)));op=gone?0:Math.max(oh,oc);gl.style.opacity=op;$("#fallback").style.opacity=op}
+ var oh=Math.max(0,Math.min(1,1-(-a.top-innerHeight*.95)/(innerHeight*.6))),oc=Math.max(0,Math.min(1,1-b.top/(innerHeight*.9)));op=gone?0:Math.max(oh,oc);gl.style.opacity=String(op);$("#fallback").style.opacity=String(op)}
 addEventListener("scroll",sc,{passive:true});sc();
 
 /* ---------- three.js: the book ---------- */
@@ -94,8 +94,23 @@ function paper(side,fn){var c=document.createElement("canvas");c.width=512;c.hei
  fn(g);
  var gr=side==="R"?g.createLinearGradient(0,0,90,0):g.createLinearGradient(512,0,422,0);gr.addColorStop(0,"rgba(26,14,80,.45)");gr.addColorStop(1,"rgba(26,14,80,0)");g.fillStyle=gr;g.fillRect(side==="R"?0:422,0,90,720);
  return tex(c)}
-function tx(g,s,x,y,f,col,al){g.font=f;g.fillStyle=col||INK;g.textAlign=al||"center";g.fillText(s,x,y)}
-function wrap(g,s,x,y,mw,lh,f,col){g.font=f;g.fillStyle=col||INK;g.textAlign="left";var ws=s.split(" "),l="";ws.forEach(function(w){var tt=l+w+" ";if(g.measureText(tt).width>mw&&l){g.fillText(l,x,y);l=w+" ";y+=lh}else l=tt});g.fillText(l,x,y);return y}
+function tx(g,s,x,y,f,col=INK,al="center"){g.font=f;g.fillStyle=col;g.textAlign=al;g.fillText(s,x,y);}
+function wrap(g,s,x,y,mw,lh,f,col=INK){
+  g.font=f;
+  g.fillStyle=col;
+  g.textAlign="left";
+  var ws=s.split(" "),l="";
+  ws.forEach(function(w){
+    var tt=l+w+" ";
+    if(g.measureText(tt).width>mw&&l){
+      g.fillText(l,x,y);
+      l=w+" ";
+      y+=lh;
+    } else l=tt;
+  });
+  g.fillText(l,x,y);
+  return y;
+}
 var GF='900 56px "Grenze Gotisch",serif',BF='17px "JetBrains Mono",monospace',IF='15px "JetBrains Mono",monospace';
 function orn(g,y){tx(g,"✦",256,y,"30px serif",VIO)}
 function num(g,n){tx(g,"— "+n+" —",256,668,IF,"rgba(26,27,33,.55)")}
